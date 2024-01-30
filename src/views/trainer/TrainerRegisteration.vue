@@ -34,6 +34,7 @@
                     <label class="text-gray-800 font-bold" for="description">Description</label>
                     <textarea v-model="trainerData.description" class="px-6 py-4 -mt-2 border rounded" id="description" rows="5"></textarea>
                     <span v-for="error in v$.description.$errors" :key="error.$uid" class="text-sm text-red-500">{{ error.$message }}</span>
+                    <input @change ="imageFileChanged($event)" accept="image/png, image/jpeg" type="file" id="file">
                     <div class="flex flex-row justify-end">
                         <button class="px-4 py-2 bg-black/90 rounded text-gray-50 text-sm hover:bg-black/75 transition-all duration-500">Register</button>
                     </div>
@@ -48,18 +49,20 @@ import { useTrainerStore } from '@/stores/trainer';
 
 import { useRouter } from 'vue-router';
 
-import { ref, computed } from 'vue'
+import { reactive, computed } from 'vue'
 
 import { v4 as uuid } from 'uuid'
+
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
 
 import useVuelidate from '@vuelidate/core'
 import { required, minLength, numeric } from '@vuelidate/validators'
 
-
+const storage = getStorage()
 const router = useRouter()
 const trainerStore = useTrainerStore()
 
-const trainerData = ref({
+const trainerData = reactive({
     id: uuid(),
     firstName: "",
     lastName: "",
@@ -68,7 +71,42 @@ const trainerData = ref({
     areas: [],
     hourlyRate: "",
     description: "",
+    imageUrl: null
 })
+
+
+//image helper rule
+// const imageRule = (options = {}) => {
+//     return helpers.withParams(options, value => {
+//         if(!value) {
+//             return true
+//         }
+//         let file = value
+//         return (file.size < 200)
+//     })
+// }
+
+//image file size function
+async function imageFileChanged(event) {
+    const file = event.target.files[0]
+    const storageRef = ref(storage, `images/${trainerData.id}/profilepicture`)
+
+    const maxSize = 250 * 1024
+    if (file.size > maxSize) {
+        alert("Seçtiğiniz image 250kb' dan fazla.")
+        return
+    }
+
+    try {
+        await uploadBytes(storageRef, file).then((snapshot) => {
+            console.log("uploaded")
+        })
+        const imageUrl = await getDownloadURL(storageRef)
+        trainerData.imageUrl = imageUrl
+    } catch (error) {
+        console.log("Error uploading image:", error)
+    }
+}
 
 const rules = computed(() => {
     return {
@@ -89,18 +127,19 @@ const createTrainer = async () => {
 
     if(result) {
 
-        const response = await fetch(`https://vue-trainerapp-default-rtdb.europe-west1.firebasedatabase.app/trainers/${trainerData.value.id}.json`, {
+        const response = await fetch(`https://vue-trainerapp-default-rtdb.europe-west1.firebasedatabase.app/trainers/${trainerData.id}.json`, {
                 method: 'PUT',
-                body: JSON.stringify(trainerData.value)
+                body: JSON.stringify(trainerData)
             })
 
             // const responseData = await response.json()
 
             if(!response.ok) {
                 // error
+                alert('Sayfa yüklenirken hata oldu.')
             }
 
-        trainerStore.registerTrainer(trainerData.value)
+        trainerStore.registerTrainer(trainerData)
         router.push('/trainer')
         console.log(trainerStore.trainers)
     } else {

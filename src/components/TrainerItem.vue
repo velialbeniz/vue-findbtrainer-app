@@ -6,7 +6,7 @@
 			<div class="flex flex-col sm:-mx-4 sm:flex-row">
 				<img
 					class="flex-shrink-0 object-cover w-24 h-24 rounded-full sm:mx-4 ring-4 ring-gray-300"
-					src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+					:src="trainerImage"
 					alt=""
 				/>
 
@@ -112,6 +112,14 @@
 	const trainerDetailLink = computed(() => {
 		return route.path + "/" + props.trainer.id;
 	});
+
+    const trainerImage = computed(()=> {
+        if(props.trainer.imageUrl) {
+            return props.trainer.imageUrl
+        } else {
+            return "https://picsum.photos/200"
+        }
+    })
 </script>
 
 <style lang="scss" scoped></style>

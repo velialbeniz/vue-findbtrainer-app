@@ -110,6 +110,8 @@
 			return false;
 		});
 	});
+
+    console.log(trainerStore.trainers)
 </script>
 
 <style lang="scss" scoped></style>

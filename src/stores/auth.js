@@ -51,7 +51,7 @@ export const useAuthStore = defineStore("authStore", {
 								"No account was found with that email";
 							break;
 						case "auth/wrong-password":
-							this.errorMessage = "Incorrect password";
+							this.errorMessage = "Incorrect password or email";
 							break;
 						default:
 							this.errorMessage =
