@@ -2,7 +2,9 @@
 	<NavBar/>
 	<main class="mx-auto max-w-7xl sm:px-6 lg:px-8 px-4">
 		<RouterView v-slot="{ Component }">
-			<component :is="Component" />
+			<transition name="route" mode="out-in">
+                <component :is="Component" />
+            </transition>
 		</RouterView>
 	</main>
 </template>
@@ -31,6 +33,17 @@
 			}
 		});
 	});
+
 </script>
 
-<style scoped></style>
+<style scoped>
+.route-enter-active,
+	.route-leave-active {
+		transition: opacity 0.3s ease;
+	}
+
+	.route-enter-from,
+	.route-leave-to {
+		opacity: 0;
+	}
+</style>

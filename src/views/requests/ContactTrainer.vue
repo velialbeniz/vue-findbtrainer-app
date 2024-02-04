@@ -56,11 +56,14 @@
 
 	const route = useRoute();
     const router = useRouter()
+    const auth = getAuth()
 
 	const messageData = ref({
+        userId: auth.currentUser.uid,
 		userEmail: "",
 		message: "",
-        coachId: route.params.id
+        coachId: route.params.id,
+        created_at: new Date()
 	});
 
 	const rules = computed(() => {
@@ -70,9 +73,6 @@
 		};
 	});
 
-	// const currentEmailSent = computed(() => {
-	//     return `mailto:${auth.currentUser.email}`
-	// })
 
 	const v$ = useVuelidate(rules, messageData);
 

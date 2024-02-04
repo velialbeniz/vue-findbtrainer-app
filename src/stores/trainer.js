@@ -33,7 +33,7 @@ export const useTrainerStore = defineStore("trainerStore", {
                 this.trainers = trainerArray
 
             } catch(error) {
-                console.log("Trainerlar yüklenirken hata oldu", error)
+                alert(error, "Yüklenirken hata oluştu.")
             }
         }
 	},

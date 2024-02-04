@@ -52,7 +52,7 @@
 						<router-link
 							@click="isModalOpen = false"
 							:to="contactTrainer"
-							class="px-4 py-2 bg-blue-600 rounded outline-none text-white hover:bg-blue-500"
+							class="px-4 py-2 bg-slate-900 rounded outline-none text-white hover:bg-slate-600 transition"
 							>Contact</router-link
 						>
 					</div>
@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-	import { ref, computed, onMounted } from "vue";
+	import { ref, computed } from "vue";
 	import { useTrainerStore } from "@/stores/trainer";
 	import { useRoute } from "vue-router";
 
@@ -92,19 +92,21 @@
 		);
 	});
 
-	const isModalOpen = ref(false);
 
 	const contactTrainer = computed(() => {
 		return route.path + "/contact";
 	});
 
-	onMounted(() => {
-		setTimeout(() => {
-			isModalOpen.value = true;
-		}, 1500);
-	});
+    const isModalOpen = computed(() => {
+        return !route.matched.some(rec => rec.name === 'trainercontact')
+    })
 
-	console.log(selectedTrainer.value);
+	// onMounted(() => {
+	// 	setTimeout(() => {
+	// 		isModalOpen.value = true;
+	// 	}, 1500);
+	// });
+
 </script>
 
 <style scoped>

@@ -34,7 +34,8 @@
                     <label class="text-gray-800 font-bold" for="description">Description</label>
                     <textarea v-model="trainerData.description" class="px-6 py-4 -mt-2 border rounded" id="description" rows="5"></textarea>
                     <span v-for="error in v$.description.$errors" :key="error.$uid" class="text-sm text-red-500">{{ error.$message }}</span>
-                    <input @change ="imageFileChanged($event)" accept="image/png, image/jpeg" type="file" id="file">
+                    <input accept="image/png, image/jpeg" type="file" id="imageFile">
+                    <span class="text-sm text-red-500">{{ errors.img }}</span>
                     <div class="flex flex-row justify-end">
                         <button class="px-4 py-2 bg-black/90 rounded text-gray-50 text-sm hover:bg-black/75 transition-all duration-500">Register</button>
                     </div>
@@ -62,6 +63,10 @@ const storage = getStorage()
 const router = useRouter()
 const trainerStore = useTrainerStore()
 
+const errors = reactive({
+    img: ''
+})
+
 const trainerData = reactive({
     id: uuid(),
     firstName: "",
@@ -87,26 +92,26 @@ const trainerData = reactive({
 // }
 
 //image file size function
-async function imageFileChanged(event) {
-    const file = event.target.files[0]
-    const storageRef = ref(storage, `images/${trainerData.id}/profilepicture`)
+// async function imageFileChanged(event) {
+//     const file = event.target.files[0]
+//     const storageRef = ref(storage, `images/${trainerData.id}/profilepicture`)
 
-    const maxSize = 250 * 1024
-    if (file.size > maxSize) {
-        alert("Seçtiğiniz image 250kb' dan fazla.")
-        return
-    }
+//     const maxSize = 250 * 1024
+//     if (file.size > maxSize) {
+//         alert("Seçtiğiniz image 250kb' dan fazla.")
+//         return
+//     }
 
-    try {
-        await uploadBytes(storageRef, file).then((snapshot) => {
-            console.log("uploaded")
-        })
-        const imageUrl = await getDownloadURL(storageRef)
-        trainerData.imageUrl = imageUrl
-    } catch (error) {
-        console.log("Error uploading image:", error)
-    }
-}
+//     try {
+//         await uploadBytes(storageRef, file).then((snapshot) => {
+//             console.log("uploaded")
+//         })
+//         const imageUrl = await getDownloadURL(storageRef)
+//         trainerData.imageUrl = imageUrl
+//     } catch (error) {
+//         console.log("Error uploading image:", error)
+//     }
+// }
 
 const rules = computed(() => {
     return {
@@ -126,27 +131,49 @@ const createTrainer = async () => {
     const result = await v$.value.$validate()
 
     if(result) {
+        const fileInput = document.getElementById('imageFile')
+        const file = fileInput.files[0]
+        if(!file) {
+            errors.img = "Fotoğraf yüklemediniz."
+            return
+        }
 
-        const response = await fetch(`https://vue-trainerapp-default-rtdb.europe-west1.firebasedatabase.app/trainers/${trainerData.id}.json`, {
-                method: 'PUT',
-                body: JSON.stringify(trainerData)
-            })
+        const maxSize = 250 * 1024
+        if(file.size > maxSize) {
+            errors.img = "200KB' den küçük fotoğraf seçiniz."
+            return
+        }
 
-            // const responseData = await response.json()
+        const storageRef = ref(storage, `images/${trainerData.id}/profilepicture`)
 
-            if(!response.ok) {
-                // error
-                alert('Sayfa yüklenirken hata oldu.')
-            }
+        try {
+            await uploadBytes(storageRef, file)
+            const imageUrl = await getDownloadURL(storageRef);
+            trainerData.imageUrl = imageUrl;
 
-        trainerStore.registerTrainer(trainerData)
-        router.push('/trainer')
-        console.log(trainerStore.trainers)
+            //other trainerData inputs
+            const response = await fetch(`https://vue-trainerapp-default-rtdb.europe-west1.firebasedatabase.app/trainers/${trainerData.id}.json`, {
+                    method: 'PUT',
+                    body: JSON.stringify(trainerData)
+                })
+    
+                // const responseData = await response.json()
+    
+                if(!response.ok) {
+                    // error
+                    alert('Sayfa yüklenirken hata oldu.')
+                }
+    
+            trainerStore.registerTrainer(trainerData)
+            router.push('/trainer')
+
+        } catch (error) {
+            console.log('error', error)
+        }
+
     } else {
         alert("Eksik veya hatalı kullanıcı girişi.")
     }
-    
-
 }
 </script>
 

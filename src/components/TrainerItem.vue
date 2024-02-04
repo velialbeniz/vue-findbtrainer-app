@@ -1,7 +1,7 @@
 <template>
 	<li>
 		<div
-			class="relative px-12 py-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-blue-600"
+			class="relative px-12 py-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-slate-900"
 		>
 			<div class="flex flex-col sm:-mx-4 sm:flex-row">
 				<img
@@ -105,13 +105,13 @@
 		return props.trainer.firstName + " " + props.trainer.lastName;
 	});
 
-	const trainerContactLink = computed(() => {
-		return route.path + "/" + props.trainer.id + "/contact";
-	});
+	// const trainerContactLink = computed(() => {
+	// 	return route.path + "/" + props.trainer.id + "/contact";
+	// });
 
-	const trainerDetailLink = computed(() => {
-		return route.path + "/" + props.trainer.id;
-	});
+	// const trainerDetailLink = computed(() => {
+	// 	return route.path + "/" + props.trainer.id;
+	// });
 
     const trainerImage = computed(()=> {
         if(props.trainer.imageUrl) {

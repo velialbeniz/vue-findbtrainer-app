@@ -153,7 +153,7 @@
 <script setup>
 import { defineEmits, ref } from 'vue'
 
-const emits = defineEmits()
+const emits = defineEmits(['change-filter'])
 
 const filters = ref({
         functional: true,
@@ -172,7 +172,6 @@ const filters = ref({
         }
         filters.value = updatedFilters
         emits('change-filter', updatedFilters)
-        console.log(filters.value)
 }
 
 

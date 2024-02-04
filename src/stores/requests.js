@@ -10,19 +10,33 @@ export const useRequestStore = defineStore('requestStore', {
         hasRequests(){
             return this.requests && this.requests.length > 0
         },
-
-        selectedRequests(){
-            const coachId = this.requests.coachId
-            return this.requests.filter(req => req.coachId === coachId)
-        }
     },
 
     actions: {
-        receiveMessage(message) {
-            this.requests.push({
-                messageid: uuid(),
+        async receiveMessage(message) {
+            const data = {
+                messageId: uuid(),
                 ...message
-            })
+            }
+
+                const response = await fetch(`https://vue-trainerapp-default-rtdb.europe-west1.firebasedatabase.app/requests/${message.userId}/${message.messageId}.json`, {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                })
+    
+               const responseData = response.json()
+
+                this.requests.push(responseData)
+        },
+
+        async getMessages(userID) {
+            const response = await fetch(
+                `https://vue-trainerapp-default-rtdb.europe-west1.firebasedatabase.app/requests/${userID}.json`,
+            );
+    
+            const responseData = await response.json()
+            this.requests = responseData
         }
+
     }
 })
