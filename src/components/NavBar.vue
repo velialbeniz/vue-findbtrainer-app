@@ -48,7 +48,7 @@
 					>Mesajlar</router-link
 				>
 				<router-link
-					to="/"
+					to="/whyus"
 					class="text-sm font-semibold leading-6 text-gray-900"
 					>Neden FBT?</router-link
 				>
@@ -128,7 +128,7 @@
 				</div>
 				<div class="mt-6 flow-root">
 					<div class="-my-6">
-						<div class="space-y-2 py-6">
+						<div class="space-y-2 py-6 z-50">
 							<router-link
 								@click="sideNavHandler"
 								to="/trainer"
@@ -143,7 +143,7 @@
 							>
 							<router-link
 								@click="sideNavHandler"
-								to="/"
+								to="/whyus"
 								class="-mx-3 block px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
 								>Neden FBT?</router-link
 							>
@@ -159,6 +159,7 @@
 						<div class="py-2">
 							<router-link
 								v-if="!authStore.isLoggedIn"
+                                @click="sideNavHandler"
 								to="/login"
 								class="-mx-3 block px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
 								>Giriş</router-link
@@ -166,6 +167,8 @@
 						</div>
 						<div class="py-2">
 							<button
+                                @click="authStore.signOut"
+					            v-if="authStore.isLoggedIn"
 								class="-mx-3 block px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
 							>
 								Çıkış
@@ -176,6 +179,7 @@
 							class="py-6"
 						>
 							<router-link
+                                @click="sideNavHandler"
 								to="/register"
 								class="-mx-3 block px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
 								>Kayıt</router-link

@@ -59,7 +59,7 @@
     const auth = getAuth()
 
 	const messageData = ref({
-        userId: auth.currentUser.uid,
+
 		userEmail: "",
 		message: "",
         coachId: route.params.id,
@@ -80,6 +80,12 @@
 		const result = await v$.value.$validate();
 
         if(result) {
+            if(!auth.currentUser) {
+                alert('Önce giriş yapmalısınız.')
+                router.push('/login')
+                return
+            }
+            messageData.value.userId = auth.currentUser.uid
             requestStore.receiveMessage(messageData.value)
             router.push('/trainer')
             console.log(messageData.value)

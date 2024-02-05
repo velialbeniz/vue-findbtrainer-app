@@ -9,6 +9,7 @@ import RequestsReceived from "@/views/requests/RequestsReceived.vue";
 import UserRegister from "@/views/auth/UserRegister.vue";
 import UserLogin from "@/views/auth/UserLogin.vue";
 import NotFound from "@/views/NotFound.vue";
+import WhyUs from "@/views/WhyUs.vue"
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +38,7 @@ const router = createRouter({
 		{ path: "/register", component: UserRegister },
 		{ path: "/login", component: UserLogin },
 		{ path: "/:notFound(.*)", component: NotFound },
+        { path: "/whyus", component: WhyUs }
 	],
 });
 

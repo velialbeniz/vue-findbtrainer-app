@@ -3,9 +3,14 @@
 @tailwind utilities;
 
 html {
-    scrollbar-width: none; 
-  }
-  
-  ::-webkit-scrollbar {
-    display: none;
-  }
+	scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+}

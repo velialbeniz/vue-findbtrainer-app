@@ -1,16 +1,18 @@
 <template>
 	<NavBar/>
-	<main class="mx-auto max-w-7xl sm:px-6 lg:px-8 px-4">
+	<main class="mx-auto max-w-7xl sm:px-6 lg:px-8 px-4 sm:py-12 py:6">
 		<RouterView v-slot="{ Component }">
 			<transition name="route" mode="out-in">
                 <component :is="Component" />
             </transition>
 		</RouterView>
 	</main>
+    <Footer />
 </template>
 
 <script setup>
 	import NavBar from "./components/NavBar.vue";
+    import Footer from "./components/Footer.vue";
 	import { onMounted } from "vue";
 
 	import { getAuth, onAuthStateChanged } from "firebase/auth";

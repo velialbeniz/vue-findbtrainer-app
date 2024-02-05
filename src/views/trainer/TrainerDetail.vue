@@ -19,6 +19,11 @@
 				{{ selectedTrainer.description }}
 			</p>
 
+            <p class="mt-2 text-sm font-bold flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 23q-.825 0-1.412-.587T5 21V3q0-.825.588-1.412T7 1h10q.825 0 1.413.588T19 3v18q0 .825-.587 1.413T17 23zm5-2.5q.425 0 .713-.288T13 19.5q0-.425-.288-.712T12 18.5q-.425 0-.712.288T11 19.5q0 .425.288.713T12 20.5M7 16h10V6H7z"/></svg>
+                <a :href="'tel:' + selectedTrainer.phoneNumber">{{ selectedTrainer.phoneNumber }}</a>
+            </p>
+
 			<div class="flex justify-end mt-4">
 				<p class="text-gray-600 text-sm">
 					{{ selectedTrainer.hourlyRate }} &#x20BA; / 1hr
