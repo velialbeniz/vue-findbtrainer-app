@@ -1,7 +1,7 @@
 <template>
 	<section class="py-8">
 		<div class="flex flex-col gap-4 max-w-md mx-auto shadow-md px-4 py-8">
-			<h1>User Login</h1>
+			<h1>Kullanıcı Girişi</h1>
 			<form @submit.prevent="authStore.signIn">
 				<div class="flex flex-col gap-4">
 					<input
@@ -14,7 +14,7 @@
 						v-model="authStore.password"
 						type="password"
 						class="px-6 py-4 border rounded"
-						placeholder="Enter your password"
+						placeholder="Şifre"
 					/>
 					<!-- Error message -->
 					<div
@@ -37,7 +37,7 @@
 						<div class="px-4 py-2 -mx-3">
 							<div class="mx-3">
 								<span class="font-semibold text-red-500"
-									>Error</span
+									>Hata</span
 								>
 								<p class="text-sm text-gray-600">
 									{{ authStore.errorMessage }}
@@ -49,7 +49,11 @@
 						@click="authStore.signIn"
 						class="px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded"
 					>
-						Login
+						Giriş
+					</button>
+                    <button type="button" @click="signInWithGoogle">
+						<span class="underline underline-offset-4">Google</span>
+                        ile giriş yap.
 					</button>
 				</div>
 			</form>
@@ -58,53 +62,18 @@
 </template>
 
 <script setup>
-	// import { ref } from "vue";
-
-	// import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
     import { useAuthStore } from "@/stores/auth";
 
-	// import { useRouter } from "vue-router";
+	import { useRouter } from "vue-router";
+
+    const router = useRouter()
 
     const authStore = useAuthStore()
 
-	// const email = ref("");
-	// const password = ref("");
-
-	// const errorMessage = ref();
-
-	// const router = useRouter();
-
-	// const login = () => {
-	// 	const auth = getAuth();
-
-	// 	signInWithEmailAndPassword(auth, email.value, password.value)
-	// 		.then((data) => {
-	// 			console.log("Succesfully logged in");
-
-	// 			console.log(auth.currentUser);
-
-	// 			router.replace("/");
-	// 		})
-	// 		.catch((error) => {
-	// 			console.log(error.code);
-	// 			switch (error.code) {
-	// 				case "auth/invalid-email":
-	// 					errorMessage.value = "Invalid email";
-	// 					break;
-	// 				case "auth/user-not-found":
-	// 					errorMessage.value =
-	// 						"No account was found with that email";
-	// 					break;
-	// 				case "auth/wrong-password":
-	// 					errorMessage.value = "Incorrect password";
-	// 					break;
-	// 				default:
-	// 					errorMessage.value = "Email or password was incorrect";
-	// 					break;
-	// 			}
-	// 		});
-	// };
+    const signInWithGoogle = async () => {
+        await authStore.loginWithGoogle()
+        router.push('/trainer')
+    }
 </script>
 
 <style scoped></style>

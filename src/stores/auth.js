@@ -4,6 +4,8 @@ import {
 	signOut,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup
 } from "firebase/auth";
 import router from "../router/index";
 
@@ -60,6 +62,24 @@ export const useAuthStore = defineStore("authStore", {
 					}
 				});
 		},
+
+        // google login
+
+        async loginWithGoogle () {
+            const auth = getAuth()
+            const provider = new GoogleAuthProvider();
+            await signInWithPopup(auth, provider).then((result) => {
+                const credential = GoogleAuthProvider.credentialFromResult(result)
+                const token = credential.accessToken
+
+                const user = result.user
+            }).catch((err) => {
+                const errorCode = err.code
+                this.errorMessage = err.message
+                const email = err.customData.email
+                const credential = GoogleAuthProvider.credentialFromError(err)
+            } )
+        },
 
 		signOut() {
 			const auth = getAuth();

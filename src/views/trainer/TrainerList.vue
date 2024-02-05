@@ -87,7 +87,9 @@
         } catch(error) {
             error.value = error.message || 'Bilgiler yüklenirken hata oluştu.'
         }
-		isLoading.value = false;
+        setTimeout(() => {
+            isLoading.value = false;
+        }, 500);
 	}
 
 	fetchedTrainers();

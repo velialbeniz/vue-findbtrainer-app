@@ -23,8 +23,8 @@
 						Submit
 					</button>
 					<button type="button" @click="signInWithGoogle">
-						Sign in with
 						<span class="underline underline-offset-4">Google</span>
+                        ile giriş yap.
 					</button>
 				</div>
 			</form>
@@ -34,11 +34,14 @@
 
 <script setup>
     import { useAuthStore } from "@/stores/auth";
+    import { useRouter } from "vue-router";
 
+    const router = useRouter()
     const authStore = useAuthStore()
 
-    const signInWithGoogle = () => {
-
+    const signInWithGoogle = async () => {
+        await authStore.loginWithGoogle()
+        router.push('/trainer')
     }
 </script> 
 
