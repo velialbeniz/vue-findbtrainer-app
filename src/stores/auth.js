@@ -71,7 +71,6 @@ export const useAuthStore = defineStore("authStore", {
             await signInWithPopup(auth, provider).then((result) => {
                 const credential = GoogleAuthProvider.credentialFromResult(result)
                 const token = credential.accessToken
-
                 const user = result.user
             }).catch((err) => {
                 const errorCode = err.code

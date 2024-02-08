@@ -91,27 +91,6 @@ const trainerData = reactive({
 //     })
 // }
 
-//image file size function
-// async function imageFileChanged(event) {
-//     const file = event.target.files[0]
-//     const storageRef = ref(storage, `images/${trainerData.id}/profilepicture`)
-
-//     const maxSize = 250 * 1024
-//     if (file.size > maxSize) {
-//         alert("Seçtiğiniz image 250kb' dan fazla.")
-//         return
-//     }
-
-//     try {
-//         await uploadBytes(storageRef, file).then((snapshot) => {
-//             console.log("uploaded")
-//         })
-//         const imageUrl = await getDownloadURL(storageRef)
-//         trainerData.imageUrl = imageUrl
-//     } catch (error) {
-//         console.log("Error uploading image:", error)
-//     }
-// }
 
 const rules = computed(() => {
     return {
@@ -156,8 +135,6 @@ const createTrainer = async () => {
                     method: 'PUT',
                     body: JSON.stringify(trainerData)
                 })
-    
-                // const responseData = await response.json()
     
                 if(!response.ok) {
                     // error
